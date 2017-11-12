@@ -23,7 +23,7 @@ namespace SimpleFileBackup
         /*If someone ever gets to read this source code:
          * Hello, at the time I am writing this I am a 17 year old student from Austria (date 16.08.2017).
          * I coded this because I wanted a tool to backup my KeePass files to more locations at once.
-         * 
+         * d
          * Contact: salvenmarcel@gmail.com */
 
         private void FormMain_Load(object sender, EventArgs e)
