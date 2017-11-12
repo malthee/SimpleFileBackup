@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+</head>
+<body style="font-family:arial;">
+<center><h1>Simple File Backup</h1>
+Program by Marcel Salvenmoser
+<br>
+<br>
+<b><h3>General</h3></b>
+Select files by pressing the first "Browse" button on the right. You can select multiple files at once or open the browse window multiple times. 
+After pressing OK the file locations will be saved in the drop down list. You can also add files by typing the path in the textbox and pressing enter. If you made a wrong selection, you can delete single items by selecting them in the drop down list and pressing "Delete Item".
+You can clear the list by pressing "Clear List".
+<br>
+<br>
+The "Backup Destitination" selection works the same way. 
+<br>
+<br>
+<b><h3>Settings</h3></b>
+<b>Override idenetical files in directory</b>
+<br>
+<br>
+If you want to replace your old files with the new files enable the "Override identical files in directory" option.
+This way, if a file called 123.jpg is already in the directory, it will be replaced. Same goes for ZIP files. 
+<br>
+<br>
+<b>Put files in given directory</b>
+<br>
+<br>
+Copies the files into the selected directories.
+<br>
+<br>
+<b>Create a subfolder in directory</b>
+<br>
+<br>
+Creates a subfolder in every given directory.
+<br>
+<br>
+<b>Create a .zip file in directory</b>
+<br>
+<br>
+Create a .zip from the given files and copy it to every listed directory.
+<br>
+<br>
+<b>Name Folder/.zip</b>
+<br>
+<br>
+Only works when "Create a subfolder in directory" or "Create a .zip file in directory" is selected.
+<br>
+You can name your folder or .zip file with a maximum of 20 characters. The characters have to be compatible with the windows filesystem.
+<br>
+<br>
+<b>Add date to Folder/.zip name</b>
+<br>
+<br>
+Adds your local date to the folder/.zip name in the format name_10-10-2010.
+<br>
+<br>
+<b>Save Default File Paths & Save Default Backup Paths</b>
+<br>
+<br>
+Saves your file/backup locations as a list in a text file, that is located in the program folder. This list is loaded when the program is launched and inserted in the drop down list.
+<br>
+<br>
+<b>Save Custom File Paths & Save Custom Backup Paths</b>
+<br>
+<br>
+Saves your file/backup locations in a text file you can choose the location of.
+<br>
+<br>
+<b>Open File Paths & Open Backup Paths</b>
+<br>
+<br>
+You can open a text file that contains paths to files or directories. These paths will be inserted into the drop down list. 
+<br>
+<br>
+<b><h2>Contact</h2></b>
+Bugs, Questions, anything: salvenmarcel@gmail.com
+<br>
+<br>
+Known Issues
+<br>
+<br>
+Big ammounts of data can take a long time to copy. The program UI will not respond while it's working.
+That is because I didn't implement a background worker to do the job.
+<br>
+<br>
+This is my first publicly released program. I made it because I needed a tool to backup files to more locations at once and I wanted to code something in my summer holidays. I do not expect much from this program but any feedback or criticism is appreciated.
+<br>
+<br>
+16.08.2017
+</center>
+</body>
+</html>
