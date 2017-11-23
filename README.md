@@ -1,6 +1,9 @@
 # SimpleFileBackup
 Simple C# program for copying multiple files to multiple locations at once
 
+## Download
+https://github.com/malthee/SimpleFileBackup/releases
+
 ## General
 Select files by pressing the first "Browse" button on the right. You can select multiple files at once or open the browse window multiple times. After pressing OK the file locations will be saved in the drop down list. You can also add files by typing the path in the textbox and pressing enter. If you made a wrong selection, you can delete single items by selecting them in the drop down list and pressing "Delete Item". You can clear the list by pressing "Clear List".
 
