@@ -10,24 +10,34 @@ Select files by pressing the first "Browse" button on the right. You can select 
 The "Backup Destitination" selection works the same way.
 
 ## Settings
-Override idenetical files in directory -> If you want to replace your old files with the new files enable the "Override identical files in directory" option. This way, if a file called 123.jpg is already in the directory, it will be replaced. Same goes for ZIP files.
 
-Put files in given directory -> Copies the files into the selected directories.
+### Override idenetical files in directory
+If you want to replace your old files with the new files enable the "Override identical files in directory" option. This way, if a file called 123.jpg is already in the directory, it will be replaced. Same goes for ZIP files.
 
-Create a subfolder in directory -> Creates a subfolder in every given directory.
+### Put files in given directory
+Copies the files into the selected directories.
 
-Create a .zip file in directory -> Create a .zip from the given files and copy it to every listed directory.
+### Create a subfolder in directory
+Creates a subfolder in every given directory.
 
-Name Folder/.zip -> Only works when "Create a subfolder in directory" or "Create a .zip file in directory" is selected.
+### Create a .zip file in directory
+Create a .zip from the given files and copy it to every listed directory.
+
+### Name Folder/.zip
+Only works when "Create a subfolder in directory" or "Create a .zip file in directory" is selected.
 You can name your folder or .zip file with a maximum of 20 characters. The characters have to be compatible with the windows filesystem.
 
-Add date to Folder/.zip name -> Adds your local date to the folder/.zip name in the format name_10-10-2010.
+### Add date to Folder/.zip name
+Adds your local date to the folder/.zip name in the format name_10-10-2010.
 
-Save Default File Paths & Save Default Backup Paths -> Saves your file/backup locations as a list in a text file, that is located in the program folder. This list is loaded when the program is launched and inserted in the drop down list.
+### Save Default File Paths & Save Default Backup Paths
+Saves your file/backup locations as a list in a text file, that is located in the program folder. This list is loaded when the program is launched and inserted in the drop down list.
 
-Save Custom File Paths & Save Custom Backup Paths -> Saves your file/backup locations in a text file you can choose the location of.
+### Save Custom File Paths & Save Custom Backup Paths
+Saves your file/backup locations in a text file you can choose the location of.
 
-Open File Paths & Open Backup Paths -> You can open a text file that contains paths to files or directories. These paths will be inserted into the drop down list.
+### Open File Paths & Open Backup Paths
+You can open a text file that contains paths to files or directories. These paths will be inserted into the drop down list.
 
 ## Known Issues
 
