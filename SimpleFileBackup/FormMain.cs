@@ -20,11 +20,7 @@ namespace SimpleFileBackup
             InitializeComponent();
         }
 
-        /*If someone ever gets to read this source code:
-         * Hello, at the time I am writing this I am a 17 year old student from Austria (date 16.08.2017).
-         * I coded this because I wanted a tool to backup my KeePass files to more locations at once.
-         * d
-         * Contact: salvenmarcel@gmail.com */
+        #region form load
 
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -57,6 +53,8 @@ namespace SimpleFileBackup
                     comboBoxFilestobackup.SelectedItem = comboBoxFilestobackup.Items[0];
             }
         }
+
+        #endregion
 
         #region display text
 
@@ -220,6 +218,8 @@ namespace SimpleFileBackup
         }
 
         #endregion
+
+        #region start backup, button ok
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
@@ -421,6 +421,8 @@ namespace SimpleFileBackup
             displayText("File backup successful", 3000, "green");
 
         }
+
+        #endregion
 
         #region about info
 
