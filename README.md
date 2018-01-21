@@ -1,6 +1,8 @@
 # SimpleFileBackup
 Simple C# program for copying multiple files to multiple locations at once
 
+![Image of SimpleFileBackup UI](https://i.imgur.com/8520Ob0.png)
+
 ## Download
 https://github.com/malthee/SimpleFileBackup/releases
 
@@ -16,6 +18,8 @@ If you want to replace your old files with the new files enable the "Override id
 
 ### Put files in given directory
 Copies the files into the selected directories.
+
+![List of files](https://i.imgur.com/6DghufZ.png)
 
 ### Create a subfolder in directory
 Creates a subfolder in every given directory.
@@ -38,11 +42,5 @@ Saves your file/backup locations in a text file you can choose the location of.
 
 ### Open File Paths & Open Backup Paths
 You can open a text file that contains paths to files or directories. These paths will be inserted into the drop down list.
-
-## Known Issues
-
-Big ammounts of data can take a long time to copy. The program UI will not respond while it's working. That is because I didn't implement a background worker to do the job.
-
-
 
 This is my first publicly released program. I made it because I needed a tool to backup files to more locations at once and I wanted to code something in my summer holidays. I do not expect much from this program but any feedback or criticism is appreciated. 
