@@ -265,7 +265,7 @@ namespace SimpleFileBackup
             }
 
             //check if the folder/zip is named
-            if ((fileSettings[(int)FSettings.SubFolder] || fileSettings[(int)FSettings.ZipFile]) && (textBoxName.Text.Equals("Name Folder/.zip")||(textBoxName.Text.Trim().Equals(""))))
+            if ((fileSettings[(int)FSettings.SubFolder] || fileSettings[(int)FSettings.ZipFile]) && (textBoxName.Text.Equals("Name Folder/.zip") || (textBoxName.Text.Trim().Equals(""))))
             {
                 displayText("Please enter a name for your Folder/.zip!", 1500, "red");
                 return;
@@ -387,57 +387,47 @@ namespace SimpleFileBackup
             }
         }
 
-        private void openFilePathsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void openPaths_Click(object sender, EventArgs e)
         {
+            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+            ComboBox boxToFill;
+
+            if (menuItem.Text.Equals("Open File Paths"))
+                boxToFill = comboBoxFilestobackup;
+            else
+                boxToFill = comboBoxBackupLocations;
+
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Text files|*.txt";
                 ofd.ShowDialog();
                 if (ofd.FileName != "")
                 {
-                    comboBoxFilestobackup.Items.Clear();
+                    boxToFill.Items.Clear();
 
                     using (StreamReader sr = new StreamReader(ofd.FileName))
                     {
+                        int linesRead = 0;
                         while (!sr.EndOfStream)
                         {
-                            comboBoxFilestobackup.Items.Add(sr.ReadLine());
+                            string readData = sr.ReadLine();
+                            Console.WriteLine(readData.Length);
+                            if (linesRead > 50 || readData.Length > 200)
+                                break; //maximum of lines read should be around 50 and max lenght of path should be 200 to prevent memory problems
+                            boxToFill.Items.Add(readData);
+                            linesRead++;
                         }
                     }
 
-                    if (comboBoxFilestobackup.Items.Count != 0) //select first item, so the user know something is there
-                        comboBoxFilestobackup.SelectedItem = comboBoxFilestobackup.Items[0];
+                    if (boxToFill.Items.Count != 0) //select first item, so the user know something is there
+                        boxToFill.SelectedItem = boxToFill.Items[0];
 
                     displayText("Successfully opened '" + ofd.FileName + "'", 1500, "green");
                 }
             }
         }
 
-        private void openBackupPathsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                ofd.Filter = "Text files|*.txt";
-                ofd.ShowDialog();
-                if (ofd.FileName != "")
-                {
-                    comboBoxBackupLocations.Items.Clear();
-
-                    using (StreamReader sr = new StreamReader(ofd.FileName))
-                    {
-                        while (!sr.EndOfStream)
-                        {
-                            comboBoxBackupLocations.Items.Add(sr.ReadLine());
-                        }
-                    }
-
-                    if (comboBoxBackupLocations.Items.Count != 0) //select first item, so the user know something is there
-                        comboBoxBackupLocations.SelectedItem = comboBoxBackupLocations.Items[0];
-
-                    displayText("Successfully opened '" + ofd.FileName + "'", 1500, "green");
-                }
-            }
-        }
+        #region save custom
 
         private void saveCustomFilePathsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -487,6 +477,8 @@ namespace SimpleFileBackup
 
         #endregion
 
+        #endregion
+
         #region backgroundworker 
 
         private void DoBackup(BackgroundWorker bgWorker, DoWorkEventArgs e)
@@ -499,7 +491,7 @@ namespace SimpleFileBackup
             //zip progressvalue is calculated different from copy progressvalue
             int progressValue = (backupData.FileSettings[(int)FSettings.ZipFile]) ? 40 / (backupData.BackupFiles.Count) : 80 / (backupData.BackupFiles.Count * backupData.BackupLocations.Count);
             //add this number every time a file is copied, not that accurate but w/e
-            MessageBox.Show(progressValue.ToString());
+
             //shows that everything works and is ready to copy
             currentProgress = 20;
 
@@ -529,7 +521,6 @@ namespace SimpleFileBackup
 
                             currentProgress = (currentProgress + progressValue < 100) ? currentProgress + progressValue : 100; //100 is maximum, if it would go above just set it 100
                             bgWorker.ReportProgress(currentProgress);
-                            MessageBox.Show(currentProgress.ToString());
                         }
                         catch (Exception ex)
                         {
@@ -548,7 +539,7 @@ namespace SimpleFileBackup
             else //make a zip file 
             {
                 if (!Directory.Exists(backupData.FileName)) //create temporary folder to make zip
-                {   
+                {
                     Directory.CreateDirectory(backupData.FileName);
                 }
 

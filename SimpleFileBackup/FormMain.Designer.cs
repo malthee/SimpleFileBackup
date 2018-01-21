@@ -243,7 +243,7 @@
             this.openFilePathsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openFilePathsToolStripMenuItem.Size = new System.Drawing.Size(286, 22);
             this.openFilePathsToolStripMenuItem.Text = "Open File Paths";
-            this.openFilePathsToolStripMenuItem.Click += new System.EventHandler(this.openFilePathsToolStripMenuItem_Click);
+            this.openFilePathsToolStripMenuItem.Click += new System.EventHandler(this.openPaths_Click);
             // 
             // openBackupPathsToolStripMenuItem
             // 
@@ -252,7 +252,7 @@
             | System.Windows.Forms.Keys.O)));
             this.openBackupPathsToolStripMenuItem.Size = new System.Drawing.Size(286, 22);
             this.openBackupPathsToolStripMenuItem.Text = "Open Backup Paths";
-            this.openBackupPathsToolStripMenuItem.Click += new System.EventHandler(this.openBackupPathsToolStripMenuItem_Click);
+            this.openBackupPathsToolStripMenuItem.Click += new System.EventHandler(this.openPaths_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -385,7 +385,7 @@
             this.MaximizeBox = false;
             this.Name = "FormMain";
             this.ShowIcon = false;
-            this.Text = "SimpleFileBackup 1.01";
+            this.Text = "SimpleFileBackup";
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
