@@ -57,6 +57,7 @@
             this.checkBoxDate = new System.Windows.Forms.CheckBox();
             this.progressBarMain = new System.Windows.Forms.ProgressBar();
             this.checkBoxOverride = new System.Windows.Forms.CheckBox();
+            this.backgroundWorkerBackup = new System.ComponentModel.BackgroundWorker();
             this.menuStrip.SuspendLayout();
             this.groupBoxSettings.SuspendLayout();
             this.SuspendLayout();
@@ -349,6 +350,14 @@
             this.checkBoxOverride.Text = "Override identical files in directory";
             this.checkBoxOverride.UseVisualStyleBackColor = true;
             // 
+            // backgroundWorkerBackup
+            // 
+            this.backgroundWorkerBackup.WorkerReportsProgress = true;
+            this.backgroundWorkerBackup.WorkerSupportsCancellation = true;
+            this.backgroundWorkerBackup.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerBackup_DoWork);
+            this.backgroundWorkerBackup.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerBackup_ProgressChanged);
+            this.backgroundWorkerBackup.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerBackup_RunWorkerCompleted);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -376,7 +385,7 @@
             this.MaximizeBox = false;
             this.Name = "FormMain";
             this.ShowIcon = false;
-            this.Text = "SimpleFileBackup v1.01";
+            this.Text = "SimpleFileBackup 1.01";
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -417,5 +426,6 @@
         private System.Windows.Forms.ToolStripMenuItem saveCustomBackupPathsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openFilePathsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openBackupPathsToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerBackup;
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
@@ -70,11 +67,11 @@ namespace SimpleFileBackup
                 await Task.Delay(50); //wait until the last message is done displaying
             }
 
-            if(color.Equals("red"))
+            if (color.Equals("red"))
                 labelInfotext.ForeColor = Color.Red;
-            else if(color.Equals("green"))
+            else if (color.Equals("green"))
                 labelInfotext.ForeColor = Color.Green;
-           
+
             labelInfotext.Text = text;
             labelInfotext.Visible = true;
             await Task.Delay(ms);
@@ -115,10 +112,10 @@ namespace SimpleFileBackup
 
         private void comboBoxFilestobackup_KeyDown(object sender, KeyEventArgs e) //add or edit items
         {
-            if(e.KeyCode == Keys.Enter) 
+            if (e.KeyCode == Keys.Enter)
             {
-                if (!File.Exists(comboBoxFilestobackup.Text)) 
-                { 
+                if (!File.Exists(comboBoxFilestobackup.Text))
+                {
                     displayText("File does not exist!", 1500, "red");
                     return;
                 }
@@ -140,7 +137,7 @@ namespace SimpleFileBackup
         private void buttonFilestobackupDeleteitem_Click(object sender, EventArgs e)
         {
             if (comboBoxFilestobackup.SelectedItem != null)
-            { 
+            {
                 comboBoxFilestobackup.Items.Remove(comboBoxFilestobackup.SelectedItem);
                 comboBoxFilestobackup.Text = "";
                 displayText("Successfully deleted item.", 1500, "green");
@@ -183,7 +180,6 @@ namespace SimpleFileBackup
             using (CommonOpenFileDialog cof = new CommonOpenFileDialog())
             {
                 cof.IsFolderPicker = true;
-                
                 if (cof.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     if (!comboBoxBackupLocations.Items.Contains(cof.FileName))//only add if not yet added
@@ -193,7 +189,7 @@ namespace SimpleFileBackup
                 }
                 else
                     return; //if the user cancels the dialog
-               
+
             }
         }
 
@@ -219,13 +215,16 @@ namespace SimpleFileBackup
 
         #endregion
 
-        #region start backup, button ok
+        #region button ok click
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            progressBarMain.Value = 0;
-            
-            #region check if files, directories exist
+            DateTime dt = DateTime.Now; //for adding date to file names
+            List<string> backupLocations = new List<string>();
+            List<string> backupFiles = new List<string>();
+            //taking values from checkboxes and radiobuttons
+            bool[] fileSettings = new bool[] { checkBoxOverride.Checked, radioButtonNormal.Checked, radioButtonFolder.Checked, radioButtonZIP.Checked, checkBoxDate.Checked };
+            string fname = textBoxName.Text;
 
             if (comboBoxFilestobackup.Items.Count == 0) //if no files to backup are given
             {
@@ -233,24 +232,30 @@ namespace SimpleFileBackup
                 return;
             }
 
-            if (comboBoxBackupLocations.Items.Count==0) //if no backup locations are given
+            if (comboBoxBackupLocations.Items.Count == 0) //if no backup locations are given
             {
                 displayText("No backup path set!", 1500, "red");
                 return;
             }
 
+            //fill the lists with the items in the comboboxes
+            foreach (string s in comboBoxBackupLocations.Items) { backupLocations.Add(s); }
+            foreach (string s in comboBoxFilestobackup.Items) { backupFiles.Add(s); }
+
+            #region check if files, directories exist
+
             //check if directories still exist
-            foreach(string s in comboBoxBackupLocations.Items)
+            foreach (string s in backupLocations)
             {
                 if (!Directory.Exists(s))
                 {
-                    displayText("'"+ s + "' is not a valid location!",1500, "red");
+                    displayText("'" + s + "' is not a valid location!", 1500, "red");
                     return;
                 }
             }
 
             //check if files still exist
-            foreach(string s in comboBoxFilestobackup.Items)
+            foreach (string s in backupFiles)
             {
                 if (!File.Exists(s))
                 {
@@ -259,7 +264,8 @@ namespace SimpleFileBackup
                 }
             }
 
-            if (radioButtonFolder.Checked&&textBoxName.Text.Equals("Name Folder/.zip")) //check if is named
+            //check if the folder/zip is named
+            if ((fileSettings[(int)FSettings.SubFolder] || fileSettings[(int)FSettings.ZipFile]) && (textBoxName.Text.Equals("Name Folder/.zip")||(textBoxName.Text.Trim().Equals(""))))
             {
                 displayText("Please enter a name for your Folder/.zip!", 1500, "red");
                 return;
@@ -267,159 +273,38 @@ namespace SimpleFileBackup
 
             #endregion
 
-            #region variables, objects and lists
+            #region prepare and create folders
 
-            DateTime dt = DateTime.Now; //for adding date to file names
-            List<string> backupLocations = new List<string>(); //avoids users changing the comboboxes while working
-            List<string> backupFiles = new List<string>();
-            string fname = textBoxName.Text;
-            bool over = checkBoxOverride.Checked; //identical files in directory get overriden if true
-            foreach(string s in comboBoxBackupLocations.Items) { backupLocations.Add(s); }
-            foreach(string s in comboBoxFilestobackup.Items) { backupFiles.Add(s); }
-
-            #endregion
-
-            groupBoxSettings.Enabled = false; //keep the user from pressing the button or changing something in settings while working
-            buttonOK.Enabled = false;
-
-            #region folder creation
-
-            if (radioButtonFolder.Checked)
-            { 
-                foreach(string l in backupLocations)
+            if (fileSettings[(int)FSettings.SubFolder])
+            {
+                foreach (string l in backupLocations)
                 {
                     try
                     {
-                        if (checkBoxDate.Checked&&!Directory.Exists(Path.Combine(l, fname + "_" + dt.Day + "-" + dt.Month + "-" + dt.Year))) //only create if not created yet
-                            Directory.CreateDirectory(Path.Combine(l,fname + "_" + dt.Day + "-" + dt.Month + "-" + dt.Year));
-                        else if(!Directory.Exists(Path.Combine(l, fname)))
-                            Directory.CreateDirectory(Path.Combine(l,fname));
+                        //only create if not created yet, add date if the checkbox was checked
+                        if (fileSettings[(int)FSettings.AddDateToFileName] && !Directory.Exists(Path.Combine(l, fname + "_" + dt.Day + "-" + dt.Month + "-" + dt.Year)))
+                            Directory.CreateDirectory(Path.Combine(l, fname + "_" + dt.Day + "-" + dt.Month + "-" + dt.Year));
+                        else if (!Directory.Exists(Path.Combine(l, fname)))
+                            Directory.CreateDirectory(Path.Combine(l, fname));
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         displayText("Not able to create folder at '" + l + "' maybe invalid foldername or missing permissions?", 3000, "red");
-                        Console.WriteLine(ex); 
-                        groupBoxSettings.Enabled = true; //enable controls again
-                        buttonOK.Enabled = true;
-                        return;
-                    }
-                }
-            }
-
-            #endregion
-
-            progressBarMain.Value = 20;
-            int progress = backupFiles.Count * backupLocations.Count;
-            progress = 80 / progress +1; //add this number every time a file is copied, not that accurate but w/e
-
-            #region copy files
-
-            if (radioButtonFolder.Checked || radioButtonNormal.Checked)
-            { 
-                foreach (string f in backupFiles) //copy each file to every backup location, f=file, l=location
-                {
-                    foreach (string l in backupLocations)
-                    {
-                        try
-                        { 
-                            if (radioButtonNormal.Checked)  //copy files in given directory
-                            {
-                                File.Copy(f,Path.Combine(l, Path.GetFileName(f)),over);
-                            }
-                            else if (radioButtonFolder.Checked)
-                            {
-                                if(checkBoxDate.Checked)    //create subfolder and add date to foldername
-                                    File.Copy(f, Path.Combine(l, fname + "_" + dt.Day + "-" + dt.Month + "-" + dt.Year, Path.GetFileName(f)),over);
-                                else                        //just create a subfolder
-                                    File.Copy(f, Path.Combine(l, fname, Path.GetFileName(f)),over);
-                            }
-
-                            if (progressBarMain.Value + progress < 100) { progressBarMain.Value += progress; } //only add if does not reach 100, prevents errorsr
-                        }
-                        catch(Exception ex)
-                        {
-                            groupBoxSettings.Enabled = true; //enable controls again
-                            buttonOK.Enabled = true;
-
-                            Console.WriteLine(ex);
-                            progressBarMain.Value = 0;
-                            displayText(ex.Message, 3000, "red");
-                            return;
-                        }
-                    }
-                }
-            }
-
-            #endregion
-
-            #region files in zip
-
-            else //make a zip file 
-            {
-                if (!Directory.Exists(fname)) //create temporary folder to make zip
-                    Directory.CreateDirectory(fname);
-
-                foreach (string f in backupFiles)
-                {
-                    File.Copy(f, Path.Combine(fname,Path.GetFileName(f)), true);
-                }
-
-                progressBarMain.Value = 60; //show some progress
-
-                foreach(string l in backupLocations)
-                {
-                    if (over)//if overriding is true, delete old identical zip files
-                    {
-                        try
-                        { 
-                        if (File.Exists(Path.Combine(l, fname + "_" + dt.Day + "-" + dt.Month + "-" + dt.Year + ".zip")))
-                            File.Delete(Path.Combine(l, fname + "_" + dt.Day + "-" + dt.Month + "-" + dt.Year + ".zip"));
-
-                        if (File.Exists(Path.Combine(l, fname + ".zip")))
-                            File.Delete(Path.Combine(l, fname + ".zip"));
-                        }
-                        catch (Exception ex)
-                        {
-                            groupBoxSettings.Enabled = true; //enable controls again
-                            buttonOK.Enabled = true;
-
-                            Console.WriteLine(ex);
-                            progressBarMain.Value = 0;
-                            displayText(ex.Message, 3000, "red");
-                            return;
-                        }
-                    }
-
-                    try
-                    { 
-                        if (checkBoxDate.Checked)
-                            ZipFile.CreateFromDirectory(fname, Path.Combine(l, fname + "_" + dt.Day + "-" + dt.Month + "-" + dt.Year+".zip"));
-                        else
-                            ZipFile.CreateFromDirectory(fname, Path.Combine(l, fname + ".zip"));
-                    }
-                    catch(Exception ex)
-                    {
-                        groupBoxSettings.Enabled = true; //enable controls again
-                        buttonOK.Enabled = true;
-
                         Console.WriteLine(ex);
-                        progressBarMain.Value = 0;
-                        displayText(ex.Message, 3000, "red");
                         return;
                     }
                 }
-
-                Directory.Delete(fname,true);
             }
 
             #endregion
 
-            groupBoxSettings.Enabled = true; //enable controls again
-            buttonOK.Enabled = true;
+            //used to give the background worker the information he needs
+            var bDataEventArgs = new BackupDataArgs(dt, backupLocations, backupFiles, fileSettings, fname);
 
-            progressBarMain.Value = 100;
-            displayText("File backup successful", 3000, "green");
-
+            progressBarMain.Value = 0;
+            buttonOK.Enabled = false; //disable controls in the meantime
+            groupBoxSettings.Enabled = false;
+            backgroundWorkerBackup.RunWorkerAsync(bDataEventArgs); //everything is alright, we are ready to backup
         }
 
         #endregion
@@ -443,7 +328,7 @@ namespace SimpleFileBackup
             if (textBoxName.Text.Equals("Name Folder/.zip"))
                 textBoxName.Text = "";
         }
-                                                                                            //^v when entering the textboxname delete the standard text
+        //^v when entering the textboxname delete the standard text
         private void textBoxName_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             if (textBoxName.Text.Equals("Name Folder/.zip"))
@@ -463,7 +348,7 @@ namespace SimpleFileBackup
                 textBoxName.Enabled = false;
                 textBoxName.Text = "Name Folder/.zip";
                 checkBoxDate.Enabled = false;
-                checkBoxDate.Checked = false;               
+                checkBoxDate.Checked = false;
             }
             else
             {
@@ -482,7 +367,7 @@ namespace SimpleFileBackup
             {
                 foreach (string s in comboBoxBackupLocations.Items)
                 {
-                      sw.WriteLine(s);
+                    sw.WriteLine(s);
                 }
 
                 displayText("Successfully saved default backup paths.", 1500, "green");
@@ -495,7 +380,7 @@ namespace SimpleFileBackup
             {
                 foreach (string s in comboBoxFilestobackup.Items)
                 {
-                     sw.WriteLine(s);
+                    sw.WriteLine(s);
                 }
 
                 displayText("Successfully saved default file paths.", 1500, "green");
@@ -523,7 +408,7 @@ namespace SimpleFileBackup
                     if (comboBoxFilestobackup.Items.Count != 0) //select first item, so the user know something is there
                         comboBoxFilestobackup.SelectedItem = comboBoxFilestobackup.Items[0];
 
-                    displayText("Successfully opened '"+ofd.FileName+"'", 1500, "green");
+                    displayText("Successfully opened '" + ofd.FileName + "'", 1500, "green");
                 }
             }
         }
@@ -565,9 +450,9 @@ namespace SimpleFileBackup
                 {
                     using (StreamWriter sw = new StreamWriter(sfd.FileName))
                     {
-                        foreach(string s in comboBoxFilestobackup.Items)
+                        foreach (string s in comboBoxFilestobackup.Items)
                         {
-                             sw.WriteLine(s);
+                            sw.WriteLine(s);
                         }
 
                         displayText("Successfully saved custom file paths.", 1500, "green");
@@ -598,6 +483,167 @@ namespace SimpleFileBackup
                 }
 
             }
+        }
+
+        #endregion
+
+        #region backgroundworker 
+
+        private void DoBackup(BackgroundWorker bgWorker, DoWorkEventArgs e)
+        {
+            BackupDataArgs backupData = e.Argument as BackupDataArgs;
+
+            int currentProgress = 0;
+            bgWorker.ReportProgress(currentProgress);
+
+            //zip progressvalue is calculated different from copy progressvalue
+            int progressValue = (backupData.FileSettings[(int)FSettings.ZipFile]) ? 40 / (backupData.BackupFiles.Count) : 80 / (backupData.BackupFiles.Count * backupData.BackupLocations.Count);
+            //add this number every time a file is copied, not that accurate but w/e
+            MessageBox.Show(progressValue.ToString());
+            //shows that everything works and is ready to copy
+            currentProgress = 20;
+
+            #region copy files
+
+            //if the files are being copied into a subfolder or the given folder
+            if (backupData.FileSettings[(int)FSettings.SubFolder] || backupData.FileSettings[(int)FSettings.GivenDirectory])
+            {
+                foreach (string f in backupData.BackupFiles) //copy each file to every backup location, f=file, l=location
+                {
+                    foreach (string l in backupData.BackupLocations)
+                    {
+                        try
+                        {
+                            if (backupData.FileSettings[(int)FSettings.GivenDirectory])  //copy files in given directory
+                            {
+                                File.Copy(f, Path.Combine(l, Path.GetFileName(f)), backupData.FileSettings[(int)FSettings.Override]);
+                            }
+
+                            else if (backupData.FileSettings[(int)FSettings.SubFolder])
+                            {
+                                if (backupData.FileSettings[(int)FSettings.AddDateToFileName])    //create subfolder and add date to foldername
+                                    File.Copy(f, Path.Combine(l, backupData.FileName + "_" + backupData.DTNow.Day + "-" + backupData.DTNow.Month + "-" + backupData.DTNow.Year, Path.GetFileName(f)), backupData.FileSettings[(int)FSettings.Override]);
+                                else                        //just create a subfolder
+                                    File.Copy(f, Path.Combine(l, backupData.FileName, Path.GetFileName(f)), backupData.FileSettings[(int)FSettings.Override]);
+                            }
+
+                            currentProgress = (currentProgress + progressValue < 100) ? currentProgress + progressValue : 100; //100 is maximum, if it would go above just set it 100
+                            bgWorker.ReportProgress(currentProgress);
+                            MessageBox.Show(currentProgress.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                            e.Cancel = true;
+                            return;
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+            #region files in zip
+
+            else //make a zip file 
+            {
+                if (!Directory.Exists(backupData.FileName)) //create temporary folder to make zip
+                {   
+                    Directory.CreateDirectory(backupData.FileName);
+                }
+
+                foreach (string f in backupData.BackupFiles)
+                {
+                    File.Copy(f, Path.Combine(backupData.FileName, Path.GetFileName(f)), true);
+                    currentProgress = (currentProgress + progressValue < 60) ? currentProgress + progressValue : 60; //60 is maximum for this operation, if it goes above just set it to 60
+                    bgWorker.ReportProgress(currentProgress);
+                }
+
+                //adjust progressvalue to locations, 35% progress for locations
+                progressValue = 35 / backupData.BackupLocations.Count;
+
+                foreach (string l in backupData.BackupLocations) //copy zip to every location
+                {
+                    if (backupData.FileSettings[(int)FSettings.Override])//if overriding is true, delete old identical zip files
+                    {
+                        try
+                        {
+                            if (File.Exists(Path.Combine(l, backupData.FileName + "_" + backupData.DTNow.Day + "-" + backupData.DTNow.Month + "-" + backupData.DTNow.Year + ".zip")))
+                                File.Delete(Path.Combine(l, backupData.FileName + "_" + backupData.DTNow.Day + "-" + backupData.DTNow.Month + "-" + backupData.DTNow.Year + ".zip"));
+
+                            if (File.Exists(Path.Combine(l, backupData.FileName + ".zip")))
+                                File.Delete(Path.Combine(l, backupData.FileName + ".zip"));
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                            e.Cancel = true;
+                            return;
+                        }
+                    }
+
+                    try
+                    {
+                        if (checkBoxDate.Checked)
+                            ZipFile.CreateFromDirectory(backupData.FileName, Path.Combine(l, backupData.FileName + "_" + backupData.DTNow.Day + "-" + backupData.DTNow.Month + "-" + backupData.DTNow.Year + ".zip"));
+                        else
+                            ZipFile.CreateFromDirectory(backupData.FileName, Path.Combine(l, backupData.FileName + ".zip"));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        e.Cancel = true;
+                        return;
+                    }
+
+                    currentProgress = (currentProgress + progressValue < 95) ? currentProgress + progressValue : 95; //95 is maximum for this operation
+                    bgWorker.ReportProgress(currentProgress);
+                }
+
+                bgWorker.ReportProgress(95);
+                Directory.Delete(backupData.FileName, true);
+            }
+
+            #endregion
+        }
+
+        private void backgroundWorkerBackup_DoWork(object sender, DoWorkEventArgs e)
+        {
+            DoBackup(sender as BackgroundWorker, e);
+        }
+
+        private void backgroundWorkerBackup_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBarMain.Value = e.ProgressPercentage;
+        }
+
+        private void backgroundWorkerBackup_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            groupBoxSettings.Enabled = true; //enable controls again
+            buttonOK.Enabled = true;
+
+            if (e.Cancelled)
+            {
+                //TODO: undo work that has been done upon the point, when the program is canceled & give out more detailed error messages
+                displayText("Successfully cancelled", 3000, "red");
+                progressBarMain.Value = 0;
+            }
+            else
+            {
+                progressBarMain.Value = 100;
+                displayText("File backup successful", 3000, "green");
+            }
+        }
+
+        #endregion
+
+        #region fsettings enum
+
+        //for easy access in the filesettings array
+        public enum FSettings
+        {
+            Override = 0, GivenDirectory, SubFolder, ZipFile, AddDateToFileName
         }
 
         #endregion
