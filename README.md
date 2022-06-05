@@ -1,6 +1,9 @@
 # SimpleFileBackup
 Simple C# program for copying multiple files to multiple locations at once
 
+## Update: 05.05.2022
+Thank you all for your interest into SimpleFileBackup! Since it has been a few years I am soon planning to update this Project and upgrade it to a newer .NET version. Another focus will be code quality, which has some room for improvement since this was one of my first programs I wrote before I started my formal education. I am happy to see that people have found SimpleFileBackup useful and I am looking forward to improvements. 
+
 ![Image of SimpleFileBackup UI](https://i.imgur.com/8520Ob0.png)
 
 ## Download
@@ -42,5 +45,3 @@ Saves your file/backup locations in a text file you can choose the location of.
 
 ### Open File Paths & Open Backup Paths
 You can open a text file that contains paths to files or directories. These paths will be inserted into the drop down list.
-
-This is my first publicly released program. I made it because I needed a tool to backup files to more locations at once and I wanted to code something in my summer holidays. I do not expect much from this program but any feedback or criticism is appreciated. 
