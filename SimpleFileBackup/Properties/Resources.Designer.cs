@@ -19,7 +19,7 @@ namespace SimpleFileBackup.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -69,15 +69,12 @@ namespace SimpleFileBackup.Properties {
         ///&lt;/head&gt;
         ///&lt;body style=&quot;font-family:arial;&quot;&gt;
         ///&lt;center&gt;&lt;h1&gt;Simple File Backup&lt;/h1&gt;
-        /// Program by Marcel Salvenmoser
-        /// &lt;br&gt;&lt;br&gt;
-        /// &lt;b&gt;Contact&lt;/b&gt;&lt;br&gt;
-        /// Whatever you wanna ask: salvenmarcel@gmail.com
-        /// &lt;br&gt;&lt;br&gt;
-        /// This is my first publicly released program. I made it because I needed a tool to backup files to more locations at once and I wanted to code something in my summer holidays. 
-        /// &lt;br&gt;
-        ///&lt;/body&gt;
-        ///&lt;/html&gt;.
+        ///Program by Marcel Salvenmoser
+        ///&lt;br&gt;
+        ///&lt;br&gt;
+        ///&lt;b&gt;&lt;h3&gt;General&lt;/h3&gt;&lt;/b&gt;
+        ///Select files by pressing the first &quot;Browse&quot; button on the right. You can select multiple files at once or open the browse window multiple times. 
+        ///After pressing OK the file locations will be saved in the drop down list. You can also add files by typing the path in the textbox and p [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string about {
             get {
