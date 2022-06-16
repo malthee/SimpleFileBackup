@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SimpleFileBackup
+namespace SimpleFileBackup.Windows
 {
     class BackupDataArgs : EventArgs
     {

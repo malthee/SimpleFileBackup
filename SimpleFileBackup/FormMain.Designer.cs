@@ -1,4 +1,4 @@
-﻿namespace SimpleFileBackup
+﻿namespace SimpleFileBackup.Windows
 {
     partial class FormMain
     {

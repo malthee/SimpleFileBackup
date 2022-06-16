@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2753DB89-6F2B-495A-80FC-7F9155DBD2A0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>SimpleFileBackup</RootNamespace>
-    <AssemblyName>SimpleFileBackup</AssemblyName>
+    <RootNamespace>SimpleFileBackup.Windows</RootNamespace>
+    <AssemblyName>SimpleFileBackup Windows GUI</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -82,7 +82,7 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>SimpleFileBackup.Program</StartupObject>
+    <StartupObject>SimpleFileBackup.Windows.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

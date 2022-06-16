@@ -8,7 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
-namespace SimpleFileBackup
+namespace SimpleFileBackup.Windows
 {
     public partial class FormMain : Form
     {
