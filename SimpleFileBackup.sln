@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32611.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleFileBackup.Windows", "SimpleFileBackup\SimpleFileBackup.Windows.csproj", "{2753DB89-6F2B-495A-80FC-7F9155DBD2A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleFileBackup.Core", "SimpleFileBackup.Core\SimpleFileBackup.Core.csproj", "{E6A2A5D0-0421-4B5F-8C3E-ED6B7411C7E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2753DB89-6F2B-495A-80FC-7F9155DBD2A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2753DB89-6F2B-495A-80FC-7F9155DBD2A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2753DB89-6F2B-495A-80FC-7F9155DBD2A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6A2A5D0-0421-4B5F-8C3E-ED6B7411C7E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6A2A5D0-0421-4B5F-8C3E-ED6B7411C7E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6A2A5D0-0421-4B5F-8C3E-ED6B7411C7E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6A2A5D0-0421-4B5F-8C3E-ED6B7411C7E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
