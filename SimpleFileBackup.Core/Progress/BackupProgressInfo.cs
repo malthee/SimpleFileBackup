@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimpleFileBackup.Core.Data
+namespace SimpleFileBackup.Core.Progress
 {
     /// <summary>
     /// Provides information about a running backup.
@@ -12,23 +12,17 @@ namespace SimpleFileBackup.Core.Data
         /// <summary>
         /// How much progress the backup has made. Does not have to be related to bytes backed up.
         /// </summary>
-        public double PercentDone { get; internal set; }
+        public double PercentDone { get; }
 
         /// <summary>
         /// How many bytes were backed up to output locations.
         /// </summary>
-        public long BytesBackedUp { get; internal set; }
+        public long BytesBackedUp { get; }
 
         public BackupProgressInfo(double percentDone, long bytesBackedUp)
         {
             PercentDone = percentDone;
             BytesBackedUp = bytesBackedUp;
         }
-
-        public new BackupProgressInfo MemberwiseClone()
-        {
-            return (BackupProgressInfo)base.MemberwiseClone();
-        }
-
     }
 }

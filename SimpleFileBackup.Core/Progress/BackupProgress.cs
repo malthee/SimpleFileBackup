@@ -6,7 +6,7 @@ using System.Text;
 namespace SimpleFileBackup.Core.Progress
 {
     /// <summary>
-    /// <see cref="Progress{T}"/> implementation with <see cref="BackupProgressInfo"/> requiring a <see cref="Core.BackupMetadataInfo"/> 
+    /// <see cref="Progress{T}"/> implementation with <see cref="BackupProgressInfo"/> requiring a <see cref="Data.BackupMetadataInfo"/> 
     /// for progress calculation.
     /// <br/><inheritdoc/>
     /// </summary>
@@ -22,7 +22,7 @@ namespace SimpleFileBackup.Core.Progress
         /// Initializes a <see cref="BackupProgress"/> instance.
         /// </summary>
         /// <param name="backupMetadataInfo"></param>
-        public BackupProgress(BackupMetadataInfo backupMetadataInfo)
+        public BackupProgress(BackupMetadataInfo backupMetadataInfo): base()
         {
             BackupMetadataInfo = backupMetadataInfo;
         }

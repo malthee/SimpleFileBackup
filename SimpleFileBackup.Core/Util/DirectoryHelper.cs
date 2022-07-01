@@ -5,28 +5,32 @@ using System.Text;
 
 namespace SimpleFileBackup.Core.Util
 {
-    public static class DirectoryHelper
+    internal static class DirectoryHelper
     {
         /// <summary>
-        /// Get the full size of a directory and all of its subfolders recursively.
+        /// Get the full size and count of files of a directory and all of its subfolders recursively.
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
-        public static long GetRecursiveDirectorySize(DirectoryInfo d)
+        public static (long Size, long Count) GetRecursiveDirectorySize(DirectoryInfo d)
         {
-            long size = 0;
+            long size = 0, count = 0;
             // Add directory file sizes.
             foreach (FileInfo fi in d.GetFiles())
             {
                 size += fi.Length;
+                count++;
             }
 
             // Add subdirectory sizes.
             foreach (DirectoryInfo di in d.GetDirectories())
             {
-                size += GetRecursiveDirectorySize(di);
+                var (s, c) = GetRecursiveDirectorySize(di);
+                count += c;
+                size += s;
             }
-            return size;
+
+            return (size, count);
         }
 
         /// <summary>

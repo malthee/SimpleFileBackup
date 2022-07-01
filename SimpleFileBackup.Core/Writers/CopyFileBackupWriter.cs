@@ -3,6 +3,7 @@ using SimpleFileBackup.Core.Progress;
 using SimpleFileBackup.Core.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,7 @@ namespace SimpleFileBackup.Core.Writers
 
                     if (progress != null)
                     {
-                        ReportProgress(inputFile, progress, progressInfo);
+                        progressInfo = ReportProgress(inputFile, progress, progressInfo);
                     }
                 }
             }, cancellationToken);
@@ -61,14 +62,19 @@ namespace SimpleFileBackup.Core.Writers
             }
         }
 
-        private void ReportProgress(string inputFile, IBackupProgress progress, BackupProgressInfo progressInfo)
-        {
+        private BackupProgressInfo ReportProgress(string inputFile, IBackupProgress progress, BackupProgressInfo progressInfo)
+        {        
             var metadataInfo = progress.BackupMetadataInfo;
+
             metadataInfo.FileSizes.TryGetValue(inputFile, out long fileSize);
-            double percentIncrease = fileSize / (metadataInfo.FileSizeSum + double.Epsilon); // prevent div 0
-            progressInfo.PercentDone += Math.Min(100, progressInfo.PercentDone + percentIncrease);
-            progressInfo.BytesBackedUp += fileSize;
-            progress?.Report(progressInfo.MemberwiseClone());
+            // (1 for each file + size) / (sum + filecount)
+            double percentIncrease = (1 + fileSize) / (metadataInfo.FileSizeSum + backupArgs.InputFiles.Count); 
+            var newProgress = new BackupProgressInfo(
+                percentDone: progressInfo.PercentDone + Math.Min(100, progressInfo.PercentDone + percentIncrease), // prevent going over 100
+                bytesBackedUp: progressInfo.BytesBackedUp + fileSize);
+
+            progress.Report(newProgress);
+            return newProgress;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SimpleFileBackup.Core.Data
@@ -10,24 +11,30 @@ namespace SimpleFileBackup.Core.Data
     public class BackupArguments
     {
         /// <summary>
-        /// May be paths to files or folders.
+        /// Paths to files or folders.
         /// </summary>
-        public IEnumerable<string> InputFiles { get; }
+        public IReadOnlyList<string> InputFiles { get; }
 
         /// <summary>
         /// Folder paths of output directories.
         /// </summary>
-        public IEnumerable<string> OutputDirs { get; }
+        public IReadOnlyList<string> OutputDirs { get; }
 
         /// <summary>
         /// Defines if existing files should be overwritten.
         /// </summary>
         public bool OverwriteExisting { get; }
 
+        /// <summary>
+        /// Creates a new instance with copies of <paramref name="inputFiles"/> and <paramref name="outputDirs"/>.
+        /// </summary>
+        /// <param name="inputFiles"></param>
+        /// <param name="outputDirs"></param>
+        /// <param name="overwriteExisting"></param>
         public BackupArguments(IEnumerable<string> inputFiles, IEnumerable<string> outputDirs, bool overwriteExisting)
         {
-            InputFiles = inputFiles;
-            OutputDirs = outputDirs;
+            InputFiles = inputFiles.ToList();
+            OutputDirs = outputDirs.ToList();
             OverwriteExisting = overwriteExisting;
         }
     }

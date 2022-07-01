@@ -11,7 +11,10 @@ namespace SimpleFileBackup.Core
     /// </summary>
     public class BackupWriterFactory
     {
-        public BackupArguments BackupArguments { get; }
+        /// <summary>
+        /// Arguments used to create <see cref="IBackupWriter"/>s with.
+        /// </summary>
+        public BackupArguments BackupArguments { get; set; }
 
         public BackupWriterFactory(BackupArguments args)
         {
