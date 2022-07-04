@@ -11,6 +11,8 @@ namespace SimpleFileBackup.Core
     /// </summary>
     public class BackupWriterFactory
     {
+        public const string DefaultDateFormat = "dd-MM-yyyy";
+
         /// <summary>
         /// Arguments used to create <see cref="IBackupWriter"/>s with.
         /// </summary>
@@ -24,6 +26,26 @@ namespace SimpleFileBackup.Core
         public IBackupWriter CreateCopyFileBackupWriter()
         {
             return new CopyFileBackupWriter(BackupArguments);
+        }
+
+        public IBackupWriter CreateSubfolderCopyBackupWriter(string subfolderName)
+        {
+            return new SubfolderCopyBackupWriter(BackupArguments, subfolderName);
+        }
+
+        public IBackupWriter CreateSubfolderCopyBackupWriter(string subfolderName, DateTime dateSuffix, string dateFormat = DefaultDateFormat)
+        {
+            return new SubfolderCopyBackupWriter(BackupArguments, subfolderName, dateSuffix, dateFormat);
+        }
+
+        public IBackupWriter CreateZipBackupWriter(string zipName)
+        {
+            return new ZipBackupWriter(BackupArguments, zipName);
+        }
+
+        public IBackupWriter CreateZipBackupWriter(string zipName, DateTime dateSuffix, string dateFormat = DefaultDateFormat)
+        {
+            return new ZipBackupWriter(BackupArguments, zipName, dateSuffix, dateFormat);
         }
     }
 }

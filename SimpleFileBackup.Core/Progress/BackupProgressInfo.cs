@@ -24,5 +24,15 @@ namespace SimpleFileBackup.Core.Progress
             PercentDone = percentDone;
             BytesBackedUp = bytesBackedUp;
         }
+
+        public BackupProgressInfo WithPercentDone(double percentDone)
+        {
+            return new BackupProgressInfo(percentDone, BytesBackedUp);
+        }
+
+        public BackupProgressInfo WithBytesBackedUp(long bytesBackedUp)
+        {
+            return new BackupProgressInfo(PercentDone, bytesBackedUp);
+        }
     }
 }

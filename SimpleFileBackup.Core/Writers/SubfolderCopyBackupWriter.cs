@@ -3,21 +3,22 @@ using SimpleFileBackup.Core.Progress;
 using SimpleFileBackup.Core.Util;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimpleFileBackup.Core.Writers
 {
-    /// <summary>
-    /// Writer that copies files from locations into other locations.
-    /// </summary>
-    internal class CopyFileBackupWriter : BaseBackupWriter
+    internal class SubfolderCopyBackupWriter : NamedBackupWriter
     {
-        public CopyFileBackupWriter(BackupArguments backupArguments) : base(backupArguments)
+        public SubfolderCopyBackupWriter(BackupArguments backupArguments, string subfolderName, DateTime dateSuffix, string dateFormat)
+            : base(backupArguments, subfolderName, dateSuffix, dateFormat)
+        {
+        }
+
+        public SubfolderCopyBackupWriter(BackupArguments backupArguments, string subfolderName)
+            : base(backupArguments, subfolderName)
         {
         }
 
@@ -27,16 +28,17 @@ namespace SimpleFileBackup.Core.Writers
 
             return Task.Run(() =>
             {
-                // Copy each file into each dir
+                // Copy each file into each dir, create new subdir
                 foreach (var outputDir in backupArgs.OutputDirs)
                 {
+                    var outputSubDir = Directory.CreateDirectory(Path.Combine(outputDir, backupName));
+
                     foreach (var inputFile in backupArgs.InputFiles)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        Directory.CreateDirectory(outputDir);
-                        DirectoryHelper.CopyFileOrDirectory(inputFile, outputDir, backupArgs.OverwriteExisting);
+                        DirectoryHelper.CopyFileOrDirectory(inputFile, outputSubDir.FullName, backupArgs.OverwriteExisting);
 
-                        if (progressHelper != null)
+                        if (progress != null)
                         {
                             progress.Report(progressHelper.AddProgressByFile(inputFile));
                         }
