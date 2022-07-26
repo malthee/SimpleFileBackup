@@ -35,11 +35,7 @@ namespace SimpleFileBackup.Core.Writers
                         cancellationToken.ThrowIfCancellationRequested();
                         Directory.CreateDirectory(outputDir);
                         DirectoryHelper.CopyFileOrDirectory(inputFile, outputDir, backupArgs.OverwriteExisting);
-
-                        if (progressHelper != null)
-                        {
-                            progress.Report(progressHelper.AddProgressByFile(inputFile));
-                        }
+                        progress?.Report(progressHelper.AddProgressByFile(inputFile));
                     }
                 }
             }, cancellationToken);

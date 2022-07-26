@@ -34,7 +34,7 @@ namespace SimpleFileBackup.Core.Writers
                 string originZip = CreateZipFromArguments(outputDirs.Current, cancellationToken, progress);
                 long dirCount = 1;
                 long zipSize = new FileInfo(originZip).Length;
-                progress.Report(new BackupProgressInfo(dirCount / (double)backupArgs.OutputDirs.Count, zipSize));
+                progress?.Report(new BackupProgressInfo(dirCount / (double)backupArgs.OutputDirs.Count, zipSize));
 
                 // Copy the zip into other outputs
                 while (outputDirs.MoveNext())
@@ -44,10 +44,7 @@ namespace SimpleFileBackup.Core.Writers
                     File.Copy(originZip, Path.Combine(outputDirs.Current, backupName + ".zip"), backupArgs.OverwriteExisting);
 
                     dirCount++;
-                    if (progress != null)
-                    {
-                        progress.Report(new BackupProgressInfo(dirCount / (double)backupArgs.OutputDirs.Count, zipSize * dirCount));
-                    }
+                    progress?.Report(new BackupProgressInfo(dirCount / (double)backupArgs.OutputDirs.Count, zipSize * dirCount));
                 }
             }, cancellationToken);
         }
@@ -81,6 +78,7 @@ namespace SimpleFileBackup.Core.Writers
                         // While creating zip bytesBackedUp will stay 0
                         progress?.Report(progressHelper.AddProgressByFile(inputFile).WithBytesBackedUp(0));
                     }
+                    progress?.Report(progressHelper.CurrentProgress);
                     cancellationToken.ThrowIfCancellationRequested();
                 }
             }
