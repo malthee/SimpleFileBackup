@@ -61,6 +61,7 @@ namespace SimpleFileBackup.Core.Writers
         private string CreateZipFromArguments(string location, CancellationToken cancellationToken, IBackupProgress progress = null)
         {
             BackupProgressHelper progressHelper = progress == null ? null : new BackupProgressHelper(backupArgs, progress.BackupMetadataInfo);
+            cancellationToken.ThrowIfCancellationRequested();
 
             // Create zip in first backup dir, delete first if exists
             var fileLocation = Path.Combine(location, backupName + ".zip");
@@ -78,7 +79,7 @@ namespace SimpleFileBackup.Core.Writers
                     if (progressHelper != null)
                     {
                         // While creating zip bytesBackedUp will stay 0
-                        progress.Report(progressHelper.AddProgressByFile(inputFile).WithBytesBackedUp(0));
+                        progress?.Report(progressHelper.AddProgressByFile(inputFile).WithBytesBackedUp(0));
                     }
                     cancellationToken.ThrowIfCancellationRequested();
                 }
