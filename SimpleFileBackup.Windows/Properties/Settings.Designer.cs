@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SimpleFileBackup.Windows.Properties {
+namespace Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

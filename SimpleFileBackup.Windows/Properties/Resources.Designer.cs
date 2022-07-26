@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SimpleFileBackup.Windows.Properties {
+namespace Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SimpleFileBackup.Windows.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SimpleFileBackup.Windows.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -64,17 +64,18 @@ namespace SimpleFileBackup.Windows.Properties {
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html&gt;
         ///&lt;head&gt;
-        ///  &lt;meta charset=&quot;utf-8&quot; /&gt;
-        ///  &lt;title&gt;&lt;/title&gt;
+        ///    &lt;meta charset=&quot;utf-8&quot; /&gt;
+        ///    &lt;title&gt;&lt;/title&gt;
         ///&lt;/head&gt;
         ///&lt;body style=&quot;font-family:arial;&quot;&gt;
-        ///&lt;center&gt;&lt;h1&gt;Simple File Backup&lt;/h1&gt;
-        ///Program by Marcel Salvenmoser
-        ///&lt;br&gt;
-        ///&lt;br&gt;
-        ///&lt;b&gt;&lt;h3&gt;General&lt;/h3&gt;&lt;/b&gt;
-        ///Select files by pressing the first &quot;Browse&quot; button on the right. You can select multiple files at once or open the browse window multiple times. 
-        ///After pressing OK the file locations will be saved in the drop down list. You can also add files by typing the path in the textbox and p [rest of string was truncated]&quot;;.
+        ///    &lt;center&gt;
+        ///        &lt;h1&gt;Simple File Backup Windows&lt;/h1&gt;
+        ///        Program by Marcel Salvenmoser
+        ///        &lt;br&gt;
+        ///        &lt;br&gt;
+        ///        &lt;h3&gt;General&lt;/h3&gt;
+        ///        Select files or folders by pressing the Select buttons on the right. You can select multiple files or folders at once.
+        ///        After pressing OK the file locations will be saved in the drop down list. You can also add files [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string about {
             get {
