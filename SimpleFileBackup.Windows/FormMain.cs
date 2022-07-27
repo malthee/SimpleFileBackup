@@ -13,12 +13,12 @@ using SimpleFileBackup.Core.Progress;
 using System.Threading;
 using System.Security.Cryptography;
 using System.Linq;
+using System.Collections.Specialized;
 
 namespace SimpleFileBackup.Windows
 {
     /// <summary>
     /// Logic behind the SimpleFileBackup Windows Forms User Controls.
-    /// 
     /// </summary>
     public partial class FormMain : Form
     {
@@ -46,49 +46,45 @@ namespace SimpleFileBackup.Windows
             try
             {
                 await Task.Delay(ms, displayCancellation.Token);
+                labelInfotext.Visible = false;
+                labelInfotext.Text = "";
             }
             catch (Exception) { } // ignored
-
-            labelInfotext.Visible = false;
-            labelInfotext.Text = "";
         }
 
         #endregion
 
         /* --- Form Events --- */
 
-        #region Form Load, Init Paths
+        #region Form Load, Init Paths and Settings
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            //load the default paths for easy regular backups
-            if (File.Exists("DefaultBackupPaths.txt"))
+            var settings = Properties.Settings.Default;
+            var inputFiles = settings.InputFiles?.Cast<string>().ToArray();
+            if (inputFiles != null)
             {
-                using (StreamReader sr = new StreamReader("DefaultBackupPaths.txt"))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        comboBoxBackupLocations.Items.Add(sr.ReadLine());
-                    }
-                }
-
-                if (comboBoxBackupLocations.Items.Count != 0) //select first item, so the user know something is there
-                    comboBoxBackupLocations.SelectedItem = comboBoxBackupLocations.Items[0];
+                comboBoxFilestobackup.Items.AddRange(inputFiles);
+                comboBoxFilestobackup.SelectedItem = comboBoxFilestobackup.Items[0];
             }
 
-            if (File.Exists("DefaultFilePaths.txt"))
+            var outputDirs = settings.OutputDirectories?.Cast<string>().ToArray();
+            if (outputDirs != null)
             {
-                using (StreamReader sr = new StreamReader("DefaultFilePaths.txt"))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        comboBoxFilestobackup.Items.Add(sr.ReadLine());
-                    }
-                }
-
-                if (comboBoxFilestobackup.Items.Count != 0)
-                    comboBoxFilestobackup.SelectedItem = comboBoxFilestobackup.Items[0];
+                comboBoxBackupLocations.Items.AddRange(outputDirs);
+                comboBoxBackupLocations.SelectedItem = comboBoxBackupLocations.Items[0];
             }
+
+            if (Enum.TryParse<BackupMode>(settings.BackupMode.ToString(), out var mode))
+            {
+                radioButtonNormal.Checked = mode == BackupMode.Copy;
+                radioButtonFolder.Checked = mode == BackupMode.Subfolder;
+                radioButtonZIP.Checked = mode == BackupMode.Zip;
+            }
+
+            checkBoxDate.Checked = settings.AddDate;
+            checkBoxOverride.Checked = settings.Overwrite;
+            textBoxName.Text = settings.BackupName;
         }
 
         #endregion
@@ -256,15 +252,17 @@ namespace SimpleFileBackup.Windows
 
         #region Set Backup Name 
 
+        private const string BackupNamePlaceholder = "Name Folder/.zip";
+
         private void TextBoxName_Click(object sender, EventArgs e)
         {
-            if (textBoxName.Text.Equals("Name Folder/.zip"))
+            if (textBoxName.Text.Equals(BackupNamePlaceholder))
                 textBoxName.Text = "";
         }
         //^v when entering the textboxname delete the standard text
         private void TextBoxName_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if (textBoxName.Text.Equals("Name Folder/.zip"))
+            if (textBoxName.Text.Equals(BackupNamePlaceholder))
                 textBoxName.Text = "";
         }
 
@@ -277,9 +275,9 @@ namespace SimpleFileBackup.Windows
             RadioButton rb = (RadioButton)sender;
             if (rb.Name.Equals("radioButtonNormal"))
             {
-                //toggle controls, which can only be used when rbfolder or rbzip is checked
+                // Toggle controls, which can only be used when rbfolder or rbzip is checked
                 textBoxName.Enabled = false;
-                textBoxName.Text = "Name Folder/.zip";
+                textBoxName.Text = BackupNamePlaceholder;
                 checkBoxDate.Enabled = false;
                 checkBoxDate.Checked = false;
             }
@@ -292,41 +290,34 @@ namespace SimpleFileBackup.Windows
 
         #endregion
 
-        /* --- Saved Locations --- */
+        /* --- Saved Settings and Locations --- */
 
-        #region Save and Open persisted Backup Paths
+        #region Settings Save
 
-        #region Default Paths
-
-        private void SaveDefaultBackupPathsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (StreamWriter sw = new StreamWriter("DefaultBackupPaths.txt", false))
-            {
-                foreach (string s in comboBoxBackupLocations.Items)
-                {
-                    sw.WriteLine(s);
-                }
+            var settings = Properties.Settings.Default;
+            settings.AddDate = checkBoxDate.Checked;
+            settings.Overwrite = checkBoxOverride.Checked;
+            settings.BackupName = textBoxName.Text;
+            var inputFiles = new StringCollection();
+            inputFiles.AddRange(comboBoxFilestobackup.Items.Cast<string>().ToArray());
+            var outputDirs = new StringCollection();
+            outputDirs.AddRange(comboBoxBackupLocations.Items.Cast<string>().ToArray());
+            settings.InputFiles = inputFiles;
+            settings.OutputDirectories = outputDirs;
+            settings.BackupMode =
+                radioButtonZIP.Checked ? (uint)BackupMode.Zip :
+                radioButtonFolder.Checked ? (uint)BackupMode.Subfolder :
+                 (uint)BackupMode.Copy;
 
-                DisplayText("Successfully saved default backup paths.", 1500, Color.Green);
-            }
-        }
-
-        private void SaveDefaultFilePathsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (StreamWriter sw = new StreamWriter("DefaultFilePaths.txt", false))
-            {
-                foreach (string s in comboBoxFilestobackup.Items)
-                {
-                    sw.WriteLine(s);
-                }
-
-                DisplayText("Successfully saved default file paths.", 1500, Color.Green);
-            }
+            settings.Save();
+            DisplayText("Successfully saved default values.", 1500, Color.Green);
         }
 
         #endregion
 
-        #region Custom Saved Paths
+        #region Save and Open persisted Backup Path files
 
         private void OpenPaths_Click(object sender, EventArgs e)
         {
@@ -410,8 +401,6 @@ namespace SimpleFileBackup.Windows
 
         #endregion
 
-        #endregion
-
         /* ---- Backup Logic --- */
 
         #region Backup
@@ -483,6 +472,8 @@ namespace SimpleFileBackup.Windows
             else if (radioButtonZIP.Checked) { writer = checkBoxDate.Checked ? factory.CreateZipBackupWriter(textBoxName.Text, dt) : factory.CreateZipBackupWriter(textBoxName.Text); }
             else { throw new NotSupportedException("Unsupported BackupWriter."); }
 
+            labelProgress.Text = string.Format("{0} files and {1:n0} KB input", meta.FileCount, meta.FileSizeSum / 1000);
+
             try
             {
                 await writer.ExecuteAsync(backupCancellation.Token, progress);
@@ -516,7 +507,8 @@ namespace SimpleFileBackup.Windows
         private void ReportBackupProgress(BackupProgressInfo info)
         {
             progressBarMain.Value = (int)(info.PercentDone * 100);
-            labelProgress.Text = string.Format("{0:n} KB backed up", info.BytesBackedUp / 1000);
+            labelProgress.Text = labelProgress.Text.Split('\n')[0]
+                + string.Format("\n{0:n0} KB written to output", info.BytesBackedUp / 1000);
         }
 
         private void ResetBackupUi()

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.buttonFilestobackup = new System.Windows.Forms.Button();
             this.labelFilesBackup = new System.Windows.Forms.Label();
             this.labelBackup = new System.Windows.Forms.Label();
@@ -43,8 +42,7 @@
             this.buttonBackupLocationsClear = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveDefaultFilePathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveDefaultBackupPathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveDefaultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveCustomFilePathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveCustomBackupPathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFilePathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,7 +105,7 @@
             // 
             this.buttonOK.Location = new System.Drawing.Point(15, 360);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(436, 44);
+            this.buttonOK.Size = new System.Drawing.Size(448, 44);
             this.buttonOK.TabIndex = 19;
             this.buttonOK.Text = "Backup";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -115,10 +113,11 @@
             // 
             // labelInfotext
             // 
+            this.labelInfotext.AutoEllipsis = true;
             this.labelInfotext.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelInfotext.Location = new System.Drawing.Point(239, 221);
             this.labelInfotext.Name = "labelInfotext";
-            this.labelInfotext.Size = new System.Drawing.Size(207, 82);
+            this.labelInfotext.Size = new System.Drawing.Size(224, 65);
             this.labelInfotext.TabIndex = 19;
             this.labelInfotext.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelInfotext.Visible = false;
@@ -196,8 +195,7 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveDefaultFilePathsToolStripMenuItem,
-            this.saveDefaultBackupPathsToolStripMenuItem,
+            this.saveDefaultsToolStripMenuItem,
             this.saveCustomFilePathsToolStripMenuItem,
             this.saveCustomBackupPathsToolStripMenuItem,
             this.openFilePathsToolStripMenuItem,
@@ -206,23 +204,13 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // saveDefaultFilePathsToolStripMenuItem
+            // saveDefaultsToolStripMenuItem
             // 
-            this.saveDefaultFilePathsToolStripMenuItem.Name = "saveDefaultFilePathsToolStripMenuItem";
-            this.saveDefaultFilePathsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.F)));
-            this.saveDefaultFilePathsToolStripMenuItem.Size = new System.Drawing.Size(286, 22);
-            this.saveDefaultFilePathsToolStripMenuItem.Text = "Save Default File Paths";
-            this.saveDefaultFilePathsToolStripMenuItem.Click += new System.EventHandler(this.SaveDefaultFilePathsToolStripMenuItem_Click);
-            // 
-            // saveDefaultBackupPathsToolStripMenuItem
-            // 
-            this.saveDefaultBackupPathsToolStripMenuItem.Name = "saveDefaultBackupPathsToolStripMenuItem";
-            this.saveDefaultBackupPathsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.B)));
-            this.saveDefaultBackupPathsToolStripMenuItem.Size = new System.Drawing.Size(286, 22);
-            this.saveDefaultBackupPathsToolStripMenuItem.Text = "Save Default Backup Paths";
-            this.saveDefaultBackupPathsToolStripMenuItem.Click += new System.EventHandler(this.SaveDefaultBackupPathsToolStripMenuItem_Click);
+            this.saveDefaultsToolStripMenuItem.Name = "saveDefaultsToolStripMenuItem";
+            this.saveDefaultsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveDefaultsToolStripMenuItem.Size = new System.Drawing.Size(286, 22);
+            this.saveDefaultsToolStripMenuItem.Text = "Save Defaults";
+            this.saveDefaultsToolStripMenuItem.Click += new System.EventHandler(this.SaveDefaultsToolStripMenuItem_Click);
             // 
             // saveCustomFilePathsToolStripMenuItem
             // 
@@ -338,11 +326,10 @@
             // 
             // progressBarMain
             // 
-            this.progressBarMain.Location = new System.Drawing.Point(239, 306);
-            //this.progressBarMain.MarqueeAnimationSpeed = int.MaxValue;
-            this.progressBarMain.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBarMain.Location = new System.Drawing.Point(239, 330);
             this.progressBarMain.Name = "progressBarMain";
-            this.progressBarMain.Size = new System.Drawing.Size(212, 23);
+            this.progressBarMain.Size = new System.Drawing.Size(224, 24);
+            this.progressBarMain.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBarMain.TabIndex = 18;
             // 
             // checkBoxOverride
@@ -369,7 +356,7 @@
             // 
             this.buttonCancel.Location = new System.Drawing.Point(15, 360);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(436, 44);
+            this.buttonCancel.Size = new System.Drawing.Size(448, 44);
             this.buttonCancel.TabIndex = 20;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -378,9 +365,10 @@
             // 
             // labelProgress
             // 
-            this.labelProgress.Location = new System.Drawing.Point(239, 332);
+            this.labelProgress.AutoEllipsis = true;
+            this.labelProgress.Location = new System.Drawing.Point(239, 286);
             this.labelProgress.Name = "labelProgress";
-            this.labelProgress.Size = new System.Drawing.Size(212, 22);
+            this.labelProgress.Size = new System.Drawing.Size(224, 37);
             this.labelProgress.TabIndex = 22;
             this.labelProgress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -389,7 +377,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(479, 421);
+            this.ClientSize = new System.Drawing.Size(479, 416);
             this.Controls.Add(this.labelProgress);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonFolderstobackup);
@@ -410,7 +398,6 @@
             this.Controls.Add(this.buttonFilestobackup);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.MaximizeBox = false;
             this.Name = "FormMain";
@@ -451,8 +438,6 @@
         private System.Windows.Forms.RadioButton radioButtonNormal;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.CheckBox checkBoxOverride;
-        private System.Windows.Forms.ToolStripMenuItem saveDefaultFilePathsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveDefaultBackupPathsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveCustomFilePathsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveCustomBackupPathsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openFilePathsToolStripMenuItem;
@@ -460,5 +445,6 @@
         private System.Windows.Forms.Button buttonFolderstobackup;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Label labelProgress;
+        private System.Windows.Forms.ToolStripMenuItem saveDefaultsToolStripMenuItem;
     }
 }
