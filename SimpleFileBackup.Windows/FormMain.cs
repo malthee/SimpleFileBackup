@@ -283,7 +283,7 @@ namespace SimpleFileBackup.Windows
         private void RadioButtons_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton rb = (RadioButton)sender;
-            if (rb.Name.Equals("radioButtonNormal"))
+            if (rb == radioButtonNormal)
             {
                 // Toggle controls, which can only be used when rbfolder or rbzip is checked
                 textBoxName.Enabled = false;
