@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SimpleFileBackup.Properties {
+namespace SimpleFileBackup.Windows.Properties {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace SimpleFileBackup.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -39,7 +39,7 @@ namespace SimpleFileBackup.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SimpleFileBackup.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SimpleFileBackup.Windows.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -64,20 +64,18 @@ namespace SimpleFileBackup.Properties {
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html&gt;
         ///&lt;head&gt;
-        ///  &lt;meta charset=&quot;utf-8&quot; /&gt;
-        ///  &lt;title&gt;&lt;/title&gt;
+        ///    &lt;meta charset=&quot;utf-8&quot; /&gt;
+        ///    &lt;title&gt;&lt;/title&gt;
         ///&lt;/head&gt;
         ///&lt;body style=&quot;font-family:arial;&quot;&gt;
-        ///&lt;center&gt;&lt;h1&gt;Simple File Backup&lt;/h1&gt;
-        /// Program by Marcel Salvenmoser
-        /// &lt;br&gt;&lt;br&gt;
-        /// &lt;b&gt;Contact&lt;/b&gt;&lt;br&gt;
-        /// Whatever you wanna ask: salvenmarcel@gmail.com
-        /// &lt;br&gt;&lt;br&gt;
-        /// This is my first publicly released program. I made it because I needed a tool to backup files to more locations at once and I wanted to code something in my summer holidays. 
-        /// &lt;br&gt;
-        ///&lt;/body&gt;
-        ///&lt;/html&gt;.
+        ///    &lt;center&gt;
+        ///        &lt;h1&gt;Simple File Backup Windows&lt;/h1&gt;
+        ///        Program by Marcel Salvenmoser
+        ///        &lt;br&gt;
+        ///        &lt;br&gt;
+        ///        &lt;h3&gt;General&lt;/h3&gt;
+        ///        Select files or folders by pressing the Select buttons on the right. You can select multiple files or folders at once.
+        ///        After pressing OK the file locations will be saved in the drop down list. You can also add files [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string about {
             get {

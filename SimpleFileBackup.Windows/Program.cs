@@ -1,10 +1,13 @@
-﻿using System;
+﻿using SimpleFileBackup.Core;
+using SimpleFileBackup.Core.Data;
+using SimpleFileBackup.Core.Progress;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SimpleFileBackup
+namespace SimpleFileBackup.Windows
 {
     static class Program
     {

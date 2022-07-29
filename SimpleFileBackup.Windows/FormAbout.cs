@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SimpleFileBackup
+namespace SimpleFileBackup.Windows
 {
     public partial class FormAbout : Form
     {

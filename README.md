@@ -1,9 +1,6 @@
 # SimpleFileBackup
 Simple C# program for copying multiple files to multiple locations at once
 
-## Update: 05.05.2022
-Thank you all for your interest into SimpleFileBackup! Since it has been a few years I am soon planning to update this Project and upgrade it to a newer .NET version. Another focus will be code quality, which has some room for improvement since this was one of my first programs I wrote before I started my formal education. I am happy to see that people have found SimpleFileBackup useful and I am looking forward to improvements. 
-
 ![Image of SimpleFileBackup UI](https://i.imgur.com/8520Ob0.png)
 
 ## Download
