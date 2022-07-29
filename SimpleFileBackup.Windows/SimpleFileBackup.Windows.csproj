@@ -7,7 +7,7 @@
     <ProjectGuid>{2753DB89-6F2B-495A-80FC-7F9155DBD2A0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>SimpleFileBackup.Windows</RootNamespace>
-    <AssemblyName>SimpleFileBackup Windows GUI</AssemblyName>
+    <AssemblyName>SimpleFileBackupGUI</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
