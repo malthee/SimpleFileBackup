@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.buttonFilestobackup = new System.Windows.Forms.Button();
             this.labelFilesBackup = new System.Windows.Forms.Label();
             this.labelBackup = new System.Windows.Forms.Label();
@@ -208,7 +209,7 @@
             // 
             this.saveDefaultsToolStripMenuItem.Name = "saveDefaultsToolStripMenuItem";
             this.saveDefaultsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveDefaultsToolStripMenuItem.Size = new System.Drawing.Size(286, 22);
+            this.saveDefaultsToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.saveDefaultsToolStripMenuItem.Text = "Save Defaults";
             this.saveDefaultsToolStripMenuItem.Click += new System.EventHandler(this.SaveDefaultsToolStripMenuItem_Click);
             // 
@@ -216,7 +217,7 @@
             // 
             this.saveCustomFilePathsToolStripMenuItem.Name = "saveCustomFilePathsToolStripMenuItem";
             this.saveCustomFilePathsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.saveCustomFilePathsToolStripMenuItem.Size = new System.Drawing.Size(286, 22);
+            this.saveCustomFilePathsToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.saveCustomFilePathsToolStripMenuItem.Text = "Save Custom File Paths";
             this.saveCustomFilePathsToolStripMenuItem.Click += new System.EventHandler(this.SaveCustomFilePathsToolStripMenuItem_Click);
             // 
@@ -224,7 +225,7 @@
             // 
             this.saveCustomBackupPathsToolStripMenuItem.Name = "saveCustomBackupPathsToolStripMenuItem";
             this.saveCustomBackupPathsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.saveCustomBackupPathsToolStripMenuItem.Size = new System.Drawing.Size(286, 22);
+            this.saveCustomBackupPathsToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.saveCustomBackupPathsToolStripMenuItem.Text = "Save Custom Backup Paths";
             this.saveCustomBackupPathsToolStripMenuItem.Click += new System.EventHandler(this.SaveCustomBackupPathsToolStripMenuItem_Click);
             // 
@@ -232,7 +233,7 @@
             // 
             this.openFilePathsToolStripMenuItem.Name = "openFilePathsToolStripMenuItem";
             this.openFilePathsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openFilePathsToolStripMenuItem.Size = new System.Drawing.Size(286, 22);
+            this.openFilePathsToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.openFilePathsToolStripMenuItem.Text = "Open File Paths";
             this.openFilePathsToolStripMenuItem.Click += new System.EventHandler(this.OpenPaths_Click);
             // 
@@ -241,7 +242,7 @@
             this.openBackupPathsToolStripMenuItem.Name = "openBackupPathsToolStripMenuItem";
             this.openBackupPathsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.O)));
-            this.openBackupPathsToolStripMenuItem.Size = new System.Drawing.Size(286, 22);
+            this.openBackupPathsToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.openBackupPathsToolStripMenuItem.Text = "Open Backup Paths";
             this.openBackupPathsToolStripMenuItem.Click += new System.EventHandler(this.OpenPaths_Click);
             // 
@@ -398,6 +399,7 @@
             this.Controls.Add(this.buttonFilestobackup);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.MaximizeBox = false;
             this.Name = "FormMain";
