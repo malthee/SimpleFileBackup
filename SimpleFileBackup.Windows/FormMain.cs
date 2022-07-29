@@ -38,18 +38,22 @@ namespace SimpleFileBackup.Windows
                 return; // If it's the same message don't display twice
             }
 
-            displayCancellation.Cancel(); // Cancel old message
-            displayCancellation = new CancellationTokenSource();
-            labelInfotext.ForeColor = color;
-            labelInfotext.Text = text;
-            labelInfotext.Visible = true;
-            try
+            displayCancellation?.Cancel(); // Cancel old message
+            using (var currentTokenSource = new CancellationTokenSource())
             {
-                await Task.Delay(ms, displayCancellation.Token);
-                labelInfotext.Visible = false;
-                labelInfotext.Text = "";
+                displayCancellation = currentTokenSource;
+                labelInfotext.ForeColor = color;
+                labelInfotext.Text = text;
+                labelInfotext.Visible = true;
+                try
+                {
+                    await Task.Delay(ms, currentTokenSource.Token);
+                    labelInfotext.Visible = false; // Only hide when no other display task has started
+                    labelInfotext.Text = "";
+                }
+                catch (OperationCanceledException) { } // ignored
+                finally { displayCancellation = null; }
             }
-            catch (Exception) { } // ignored
         }
 
         #endregion
@@ -138,7 +142,7 @@ namespace SimpleFileBackup.Windows
         {
             if (e.KeyCode == Keys.Enter)
             {
-                if (!File.Exists(comboBoxFilestobackup.Text) || !Directory.Exists(comboBoxFilestobackup.Text))
+                if (!File.Exists(comboBoxFilestobackup.Text) && !Directory.Exists(comboBoxFilestobackup.Text))
                 {
                     DisplayText("File or directory does not exist!", 1500, Color.Red);
                     return;
@@ -179,22 +183,28 @@ namespace SimpleFileBackup.Windows
         {
             if (e.KeyCode == Keys.Enter)
             {
-                if (!Directory.Exists(comboBoxBackupLocations.Text))
+                DirectoryInfo dir;
+                try
                 {
-                    DisplayText("Path does not exist.", 1500, Color.Red);
+                    // Create dir if not exists already
+                    dir = Directory.CreateDirectory(comboBoxBackupLocations.Text);
+                }
+                catch (Exception ex)
+                {
+                    DisplayText(ex.Message, 1500, Color.Red);
                     return;
                 }
 
                 if (comboBoxBackupLocations.SelectedItem != null) //delete old item and add new
                     comboBoxBackupLocations.Items.Remove(comboBoxBackupLocations.SelectedItem);
 
-                if (comboBoxBackupLocations.Items.Contains(comboBoxBackupLocations.Text))
+                if (comboBoxBackupLocations.Items.Contains(dir.FullName))
                 {
                     DisplayText("Directory already exists!", 1500, Color.Red);
                     return;
                 }
 
-                comboBoxBackupLocations.Items.Add(comboBoxBackupLocations.Text);
+                comboBoxBackupLocations.Items.Add(dir.FullName);
                 DisplayText("Successfully added path.", 1500, Color.Green);
             }
         }
@@ -421,16 +431,6 @@ namespace SimpleFileBackup.Windows
                 return false;
             }
 
-            // Check if files, directories exist
-            foreach (string s in backupArgs.OutputDirs)
-            {
-                if (!Directory.Exists(s))
-                {
-                    DisplayText("'" + s + "' is not a valid location!", 1500, Color.Red);
-                    return false;
-                }
-            }
-
             // Check if files still exist
             foreach (string s in backupArgs.InputFiles)
             {
@@ -461,7 +461,9 @@ namespace SimpleFileBackup.Windows
 
             ResetBackupUi();
 
-            backupCancellation = new CancellationTokenSource();
+            backupCancellation?.Cancel(); // Cancel currently running backup if not cancelled already
+            var currentTokenSource = new CancellationTokenSource();
+            backupCancellation = currentTokenSource;
             BackupWriterFactory factory = new BackupWriterFactory(backupArgs);
             BackupMetadataInfo meta = await BackupMetadataInfo.FromBackupArgumentsAsync(backupArgs);
             BackupProgress progress = new BackupProgress(ReportBackupProgress, meta);
@@ -476,7 +478,7 @@ namespace SimpleFileBackup.Windows
 
             try
             {
-                await writer.ExecuteAsync(backupCancellation.Token, progress);
+                await writer.ExecuteAsync(currentTokenSource.Token, progress);
                 progressBarMain.Value = 100;
                 DisplayText("File backup successful.", 3000, Color.Green);
             }
@@ -493,7 +495,8 @@ namespace SimpleFileBackup.Windows
                 buttonOK.Visible = true; // Enable controls again
                 buttonCancel.Visible = false;
                 groupBoxSettings.Enabled = true;
-                backupCancellation.Dispose();
+                backupCancellation = null;
+                currentTokenSource.Dispose();
             }
         }
 

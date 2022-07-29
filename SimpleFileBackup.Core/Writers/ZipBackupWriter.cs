@@ -31,6 +31,7 @@ namespace SimpleFileBackup.Core.Writers
                 var outputDirs = backupArgs.OutputDirs.GetEnumerator();
                 if (!outputDirs.MoveNext()) return;
 
+                Directory.CreateDirectory(outputDirs.Current);
                 string originZip = CreateZipFromArguments(outputDirs.Current, cancellationToken, progress);
                 long dirCount = 1;
                 long zipSize = new FileInfo(originZip).Length;
