@@ -66,14 +66,14 @@ namespace SimpleFileBackup.Windows
         {
             var settings = Properties.Settings.Default;
             var inputFiles = settings.InputFiles?.Cast<string>().ToArray();
-            if (inputFiles != null)
+            if (inputFiles != null && inputFiles.Length > 0)
             {
                 comboBoxFilestobackup.Items.AddRange(inputFiles);
                 comboBoxFilestobackup.SelectedItem = comboBoxFilestobackup.Items[0];
             }
 
             var outputDirs = settings.OutputDirectories?.Cast<string>().ToArray();
-            if (outputDirs != null)
+            if (outputDirs != null && outputDirs.Length > 0)
             {
                 comboBoxBackupLocations.Items.AddRange(outputDirs);
                 comboBoxBackupLocations.SelectedItem = comboBoxBackupLocations.Items[0];
