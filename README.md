@@ -42,6 +42,13 @@ Saves your file/backup locations in a text file you can choose the location of.
 ### Open File Paths & Open Backup Paths
 You can open a text file that contains paths to files or directories. These paths will be inserted into the drop down list.
 
+## Common problems
+1. If you have windows security folder protection enabled, you might get errors like "File cannot be found" or "Permissions error". You can fix this by navigating to the protection history and pressing allow on the blocked entries.
+
+| Navigate to protection history | Press actions -> allow |
+|--|--|
+| ![Windows protection history](https://github.com/malthee/SimpleFileBackup/assets/18032233/1a83fb66-a7c0-4ac5-9aa7-9dd2f01d6d54) | ![Allowing write access in protection history](https://github.com/malthee/SimpleFileBackup/assets/18032233/9925116f-9230-44b0-bece-d86f9fb39fd0) |
+
 # SimpleFileBackup.Core
 Core is a `.NET Framework 2.0` library for persisting one or more files or folders in one or more other locations in any recoverable format. As an example it can be used to copy files and folders from different drive locations to multiple backup drives at once.  
 
